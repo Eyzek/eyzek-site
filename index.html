@@ -160,8 +160,14 @@ h3{font-weight:400!important}
 @media (prefers-reduced-motion:reduce){.orb{animation:none}.frame{transition:none}}
 
 /* Credits strip and project links */
-.credits-strip{display:flex;gap:16px 32px;align-items:baseline;flex-wrap:wrap;padding-block:20px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:56px}
-.credits-strip ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 28px;font-size:15px}
+/* Credits: inverted pyramid */
+.credits-strip{display:grid;justify-items:center;gap:22px;padding-block:44px;text-align:center;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:56px}
+.pyr{display:grid;gap:10px;justify-items:center}
+.pyr ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 0;font-size:clamp(15px,1.6vw,21px);font-weight:300;letter-spacing:-.005em;color:var(--ink)}
+.pyr li{white-space:nowrap}
+.pyr li+li::before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--green);opacity:.7;vertical-align:middle;margin:0 clamp(12px,1.6vw,22px);transform:translateY(-1px)}
+.credits-strip{grid-template-columns:minmax(0,1fr)}.pyr{width:100%;min-width:0}.pyr ul{flex-wrap:nowrap}.pyr.measuring{visibility:hidden}
+@media (max-width:600px){.pyr{gap:8px}.pyr ul{font-size:15px}.credits-strip{padding-block:32px}}
 .watch{display:flex;gap:20px;flex-wrap:wrap}
 .tools{margin-top:28px;display:grid;gap:6px}
 .tools p{margin:0;color:var(--muted);font-size:15px}
@@ -207,7 +213,7 @@ h3{font-weight:400!important}
 .credits{gap:3px 16px;margin-top:6px;font-size:13.5px}
 .watch{margin-top:6px}
 @media (max-width:820px){.piece,.piece:nth-child(even){margin-bottom:88px;gap:18px}.piece:last-child{margin-bottom:24px}}
-.hero h1,.hero h1{font-size:clamp(34px,7vw,92px);text-transform:uppercase;letter-spacing:.16em;line-height:1;font-weight:300!important;margin-right:-.16em}
+.hero h1,.hero h1{font-size:clamp(34px,7vw,92px);text-transform:uppercase;letter-spacing:.16em;line-height:1;font-weight:300!important;margin-right:-.16em;margin-left:calc(.54px - .089em)}
 @media (max-width:480px){.hero h1{font-size:clamp(28px,10vw,44px);letter-spacing:.14em}}
 @media (min-width:600px){.pad{padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
 @media (min-width:1100px){.pad{padding-left:max(48px,env(safe-area-inset-left,0px));padding-right:max(48px,env(safe-area-inset-right,0px))}}
@@ -250,7 +256,7 @@ html,body{overflow-x:clip}
 
     <div class="credits-strip">
       <span class="eyebrow">Credits</span>
-      <ul><li>Sun Bum</li><li>GQ and Vogue x Ray-Ban Meta</li><li>Cleveland / Srixon</li><li>Twisted Tea</li><li>Hennessy x LeBron James</li><li>Travel South Dakota</li><li>San Diego Zoo</li><li>TaskRabbit</li></ul>
+      <div class="pyr"><ul><li>NCAA Golf National Championships</li><li>GQ and Vogue x Ray-Ban Meta</li><li>Hennessy x LeBron James</li></ul><ul><li>Dick's Sporting Goods</li><li>Kawasaki Motorsports</li><li>Travel South Dakota</li></ul><ul><li>Cleveland / Srixon</li><li>TaylorMade Golf</li><li>San Diego Zoo</li></ul><ul><li>Twisted Tea</li><li>TaskRabbit</li><li>T.J. Maxx</li><li>Sun Bum</li></ul><ul><li>Abbott</li><li>Adobe</li><li>Vuori</li></ul></div>
     </div>
 
     <section class="work" id="work">
@@ -386,6 +392,45 @@ document.querySelectorAll('.carousel').forEach(function(c){
   var r;t.addEventListener('scroll',function(){cancelAnimationFrame(r);r=requestAnimationFrame(upd)},{passive:true});
   window.addEventListener('resize',upd);upd();
 });
+
+/* Credits pyramid: rows rebuilt to fit the window, each row narrower than the one above */
+(function(){
+  var box=document.querySelector('.pyr');if(!box)return;
+  var names=[].map.call(box.querySelectorAll('li'),function(li){return li.textContent});
+  var lastW=0;
+  function build(){
+    var W=box.clientWidth;if(!W||W===lastW)return;lastW=W;
+    box.innerHTML='';var m=document.createElement('ul');m.style.cssText='position:absolute;visibility:hidden;white-space:nowrap';
+    names.forEach(function(n){var li=document.createElement('li');li.textContent=n;m.appendChild(li)});box.appendChild(m);
+    var lis=[].slice.call(m.children),bs=getComputedStyle(lis[1],'::before'),
+        dot=parseFloat(bs.width)+parseFloat(bs.marginLeft)+parseFloat(bs.marginRight);
+    var items=lis.map(function(li,i){return {n:li.textContent,w:li.getBoundingClientRect().width-(i?dot:0)}});
+    box.removeChild(m);
+    items.sort(function(a,b){return b.w-a.w});
+    var T=items.reduce(function(t,it){return t+it.w+dot},0)-dot,r=.4,k=1,A;
+    for(;;k++){A=2*T/(k*(1+r));if(A<=W*.98||k>40)break}
+    var rows=[];
+    for(var ri=0;ri<k&&items.length;ri++){
+      var cap=Math.min(W,(k===1?A:A-(A-A*r)*ri/(k-1))*1.06),row=[],rw=0;
+      for(var i=0;i<items.length;){var add=items[i].w+(row.length?dot:0);
+        if(rw+add<=cap||!row.length){row.push(items[i]);rw+=add;items.splice(i,1)}else i++;}
+      rows.push({r:row,w:rw});
+    }
+    while(items.length){var it=items.shift(),placed=false;
+      for(var j=rows.length-1;j>=0&&!placed;j--){if(rows[j].w+dot+it.w<=(j?rows[j-1].w:W)){rows[j].r.push(it);rows[j].w+=dot+it.w;placed=true}}
+      if(!placed)rows.push({r:[it],w:it.w});}
+    while(rows.length>1){var L=rows[rows.length-1],P=rows[rows.length-2];if(L.w>=P.w*.45)break;
+      var ok=L.r.every(function(it){for(var j=rows.length-2;j>=0;j--){var lim=j?rows[j-1].w:W;if(rows[j].w+dot+it.w<=lim){rows[j].r.push(it);rows[j].w+=dot+it.w;return true}}return false});
+      if(!ok)break;rows.pop();}
+    rows=rows.map(function(o){return o.r});
+    rows.forEach(function(r){var ul=document.createElement('ul');
+      r.forEach(function(it){var li=document.createElement('li');li.textContent=it.n;ul.appendChild(li)});box.appendChild(ul)});
+  }
+  var t;function later(){clearTimeout(t);t=setTimeout(build,60)}
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){lastW=0;build()});
+  build();
+  if(window.ResizeObserver)new ResizeObserver(later).observe(box);else window.addEventListener('resize',later);
+})();
 </script>
 
 </body>
