@@ -216,8 +216,9 @@ h3{font-weight:400!important}
 .piece{margin-bottom:72px}
 .piece+.piece{border-top:1px solid color-mix(in srgb,var(--rule) 80%,transparent);padding-top:72px}
 @media (max-width:820px){.piece,.piece:nth-child(even){margin-bottom:44px}.piece+.piece{padding-top:44px}}
-.hero{overflow:visible;overflow-x:clip}
-.orb{right:-4%;top:-6%;z-index:0;filter:blur(30px);background:radial-gradient(closest-side,color-mix(in srgb,var(--green) 14%,transparent) 0%,color-mix(in srgb,var(--green) 6%,transparent) 45%,transparent 100%)}
+html,body{overflow-x:clip}
+.hero{overflow:visible}
+.orb{width:min(900px,120vw);max-width:none;right:-22%;top:-18%;z-index:0;filter:blur(30px);background:radial-gradient(closest-side,color-mix(in srgb,var(--green) 14%,transparent) 0%,color-mix(in srgb,var(--green) 6%,transparent) 45%,transparent 100%)}
 .hero-grid{z-index:1}
 </style>
 </head>
