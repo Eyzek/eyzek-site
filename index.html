@@ -186,6 +186,39 @@ h3{font-weight:400!important}
 .track:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
 @media (hover:none){.nav{opacity:.9;width:38px;height:38px;font-size:16px}}
 @media (prefers-reduced-motion:reduce){.track{scroll-behavior:auto}}
+
+/* Hero: name on its own line, details in a row underneath, aligned left */
+.hero-grid{grid-template-columns:1fr;gap:44px;align-items:start}
+.hero aside{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:40px;align-items:start;padding:24px 0 0;border-top:1px solid var(--rule)}
+.hero aside p{max-width:40ch}
+.roles{border-top:0}
+.roles li:first-child{padding-top:0}
+.roles li:last-child{border-bottom:0}
+.cta{flex-direction:column;align-items:flex-start;gap:12px}
+@media (max-width:1024px){.hero aside{grid-template-columns:1fr 1fr}.cta{flex-direction:row;grid-column:1/-1}}
+@media (max-width:820px){.hero-grid{gap:28px}.hero aside{grid-template-columns:1fr;gap:20px}.roles li:last-child{border-bottom:1px solid var(--rule)}}
+
+/* Work: more air between projects, tighter text inside each */
+.piece{margin-bottom:144px}
+.piece:last-child{margin-bottom:48px}
+.info{gap:10px}
+.info h3{margin-bottom:2px}
+.info p{font-size:15.5px;line-height:1.55;max-width:44ch}
+.credits{gap:3px 16px;margin-top:6px;font-size:13.5px}
+.watch{margin-top:6px}
+@media (max-width:820px){.piece,.piece:nth-child(even){margin-bottom:88px;gap:18px}.piece:last-child{margin-bottom:24px}}
+.hero h1,.hero h1{font-size:clamp(34px,7vw,92px);text-transform:uppercase;letter-spacing:.16em;line-height:1;font-weight:300!important;margin-right:-.16em}
+@media (max-width:480px){.hero h1{font-size:clamp(28px,10vw,44px);letter-spacing:.14em}}
+@media (min-width:600px){.pad{padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
+@media (min-width:1100px){.pad{padding-left:max(48px,env(safe-area-inset-left,0px));padding-right:max(48px,env(safe-area-inset-right,0px))}}
+@media (min-width:821px) and (max-width:1024px){.hero aside{row-gap:24px}}
+/* Hairline between projects */
+.piece{margin-bottom:72px}
+.piece+.piece{border-top:1px solid color-mix(in srgb,var(--rule) 80%,transparent);padding-top:72px}
+@media (max-width:820px){.piece,.piece:nth-child(even){margin-bottom:44px}.piece+.piece{padding-top:44px}}
+.hero{overflow:visible;overflow-x:clip}
+.orb{right:-4%;top:-6%;z-index:0;filter:blur(30px);background:radial-gradient(closest-side,color-mix(in srgb,var(--green) 14%,transparent) 0%,color-mix(in srgb,var(--green) 6%,transparent) 45%,transparent 100%)}
+.hero-grid{z-index:1}
 </style>
 </head>
 <body style="margin:0">
@@ -201,7 +234,7 @@ h3{font-weight:400!important}
     <header class="hero" id="top">
       <div class="orb" aria-hidden="true"></div>
       <div class="hero-grid">
-        <h1>Isaac<br>Smith<span>Producer</span></h1>
+        <h1>Producer</h1>
         <aside>
           <p>I produce launch videos, branded content, and documentary work, from the first budget through final delivery. Based in San Diego.</p>
           <ul class="roles">
@@ -216,7 +249,7 @@ h3{font-weight:400!important}
 
     <div class="credits-strip">
       <span class="eyebrow">Credits</span>
-      <ul><li>Sun Bum</li><li>GQ and Vogue x Ray-Ban Meta</li><li>Cleveland / Srixon</li><li>Twisted Tea</li><li>Hennessy x LeBron James</li></ul>
+      <ul><li>Sun Bum</li><li>GQ and Vogue x Ray-Ban Meta</li><li>Cleveland / Srixon</li><li>Twisted Tea</li><li>Hennessy x LeBron James</li><li>Travel South Dakota</li><li>San Diego Zoo</li><li>TaskRabbit</li></ul>
     </div>
 
     <section class="work" id="work">
@@ -247,20 +280,20 @@ h3{font-weight:400!important}
       <article class="piece">
         <div class="frame carousel" role="region" aria-roledescription="carousel" aria-label="Bero stills"><div class="track" tabindex="0"><img src="bero-1.jpg" alt="Bero, still 1 of 6" decoding="async"><img src="bero-2.jpg" alt="Bero, still 2 of 6" loading="lazy" decoding="async"><img src="bero-3.jpg" alt="Bero, still 3 of 6" loading="lazy" decoding="async"><img src="bero-4.jpg" alt="Bero, still 4 of 6" loading="lazy" decoding="async"><img src="bero-5.jpg" alt="Bero, still 5 of 6" loading="lazy" decoding="async"><img src="bero-6.jpg" alt="Bero, still 6 of 6" loading="lazy" decoding="async"></div><span class="shade" aria-hidden="true"></span><span class="cap">Spec commercial</span><span class="count" aria-live="polite">01 / 06</span><button class="nav prev" type="button" aria-label="Previous still">&#8592;</button><button class="nav next" type="button" aria-label="Next still">&#8594;</button></div>
         <div class="info">
-          <span class="eyebrow">Spec ad</span>
+          <span class="eyebrow">2025</span>
           <h3>Bero</h3>
           <p>Spec commercial for Bero's non-alcoholic Edge Hill Hazy IPA. A sunlit pool day built around the product.</p>
-          <dl class="credits"><dt>Role</dt><dd class="draft">[Role]</dd><dt>Format</dt><dd>Spec commercial</dd></dl>
+          <dl class="credits"><dt>Role</dt><dd>Producer</dd><dt>Format</dt><dd>Spec commercial</dd></dl>
         </div>
       </article>
 
       <article class="piece">
         <div class="frame carousel" role="region" aria-roledescription="carousel" aria-label="Hyperspell stills"><div class="track" tabindex="0"><img src="hyperspell-1.jpg" alt="Hyperspell, still 1 of 6" decoding="async"><img src="hyperspell-2.jpg" alt="Hyperspell, still 2 of 6" loading="lazy" decoding="async"><img src="hyperspell-3.jpg" alt="Hyperspell, still 3 of 6" loading="lazy" decoding="async"><img src="hyperspell-4.jpg" alt="Hyperspell, still 4 of 6" loading="lazy" decoding="async"><img src="hyperspell-5.jpg" alt="Hyperspell, still 5 of 6" loading="lazy" decoding="async"><img src="hyperspell-6.jpg" alt="Hyperspell, still 6 of 6" loading="lazy" decoding="async"></div><span class="shade" aria-hidden="true"></span><span class="cap">Launch video</span><span class="count" aria-live="polite">01 / 06</span><button class="nav prev" type="button" aria-label="Previous still">&#8592;</button><button class="nav next" type="button" aria-label="Next still">&#8594;</button></div>
         <div class="info">
-          <span class="eyebrow">Launch video</span>
+          <span class="eyebrow">2025</span>
           <h3>Hyperspell</h3>
           <p>Comedy launch video set in an office, with practical makeup effects and on-screen graphics.</p>
-          <dl class="credits"><dt>Role</dt><dd class="draft">[Role]</dd><dt>Format</dt><dd>Launch video</dd></dl>
+          <dl class="credits"><dt>Role</dt><dd>Producer</dd><dt>Format</dt><dd>Launch video</dd></dl>
         </div>
       </article>
 
